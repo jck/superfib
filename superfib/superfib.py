@@ -1,3 +1,6 @@
+from .primality import is_prime
+
+
 def fibonacci(n):
     """generates the first n fibonacci numbers
     """
@@ -20,5 +23,9 @@ def superfib(n):
         buzz = 'Buzz' if i % 5 == 0 else ''
         if fizz or buzz:
             print(fizz+buzz)
+            continue
+
+        if is_prime(i):
+            print('BuzzFizz')
         else:
             print(i)
