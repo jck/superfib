@@ -16,4 +16,9 @@ def superfib(n):
         * the value F(n) otherwise.
     """
     for i in fibonacci(n):
-        print(i)
+        fizz = 'Fizz' if i % 3 == 0 else ''
+        buzz = 'Buzz' if i % 5 == 0 else ''
+        if fizz or buzz:
+            print(fizz+buzz)
+        else:
+            print(i)
