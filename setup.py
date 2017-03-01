@@ -9,6 +9,7 @@ setup(
     # url='http://github.com/jck/superfib',
     packages=['superfib'],
     install_requires=['click'],
+    test_require=['pytest'],
     entry_points='''[console_scripts]
                     superfib=superfib.cli:main
                     ''',
