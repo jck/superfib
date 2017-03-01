@@ -12,7 +12,9 @@ def is_prime(n, _precision_for_huge_n=16):
     """Miller-Rabin primality test
     https://rosettacode.org/wiki/Miller%E2%80%93Rabin_primality_test#Python
     """
-    if n in _known_primes or n in (0, 1):
+    if n == 0:
+        return False
+    if n in _known_primes or n == 1:
         return True
     if any((n % p) == 0 for p in _known_primes):
         return False
@@ -47,7 +49,7 @@ _known_primes += [x for x in range(5, 1000, 2) if is_prime(x)]
 # All the primes within the first 500 fibonacci numbers
 # from http://oeis.org/A005478
 # http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable301.html
-known_fib_primes = [2,3,5,13,89,233,1597,28657,514229,433494437,
+known_fib_primes = [1, 2,3,5,13,89,233,1597,28657,514229,433494437,
  2971215073,99194853094755497, 1066340417491710595814572169,
  19134702400093278081449423917,
  475420437734698220747368027166749382927701417016557193662268716376935476241,
