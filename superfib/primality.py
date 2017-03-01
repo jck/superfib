@@ -1,55 +1,45 @@
-def _try_composite(a, d, n, s):
-    if pow(a, d, n) == 1:
+import random
+
+
+low_primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997]
+
+
+def is_prime(n, trials=6):
+    """Miller-Rabin primality test"""
+
+    if (n < 2):
         return False
-    for i in range(s):
-        if pow(a, 2**i * d, n) == n-1:
+
+    if n in low_primes:
+        return True
+
+    for prime in low_primes:
+        if (n % prime == 0):
             return False
-    # n is definitely composite
+
+    s, t = n - 1, 0
+    while s % 2 == 0:
+        s = s // 2
+        t += 1
+
+    for trials in range(5):
+        a = random.randrange(2, n - 1)
+        v = pow(a, s, n)
+        if v != 1:
+            i = 0
+            while v != (n - 1):
+                if i == t - 1:
+                    return False
+                else:
+                    i = i + 1
+                    v = (v ** 2) % n
     return True
 
-
-def is_prime(n, _precision_for_huge_n=16):
-    """Miller-Rabin primality test
-    https://rosettacode.org/wiki/Miller%E2%80%93Rabin_primality_test#Python
-    """
-    if n == 0:
-        return False
-    if n in _known_primes or n == 1:
-        return True
-    if any((n % p) == 0 for p in _known_primes):
-        return False
-
-    d, s = n - 1, 0
-    while not d % 2:
-        d, s = d >> 1, s + 1
-    # Returns exact according to http://primes.utm.edu/prove/prove2_3.html
-    ranges = [
-        (1373653, (2, 3)),
-        (25326001, (2, 3, 5)),
-        (118670087467, (2, 3, 5, 7)),
-        (2152302898747, (2, 3, 5, 7, 11)),
-        (3474749660383, (2, 3, 5, 7, 11, 13)),
-        (341550071728321, (2, 3, 5, 7, 11, 13, 17)),
-    ]
-    # special case
-    if n == 3215031751:
-        return False
-
-    for upper, bases in ranges:
-        if n < upper:
-            return not any(_try_composite(a, d, n, s) for a in bases)
-
-    return not any(_try_composite(a, d, n, s)
-                   for a in _known_primes[:_precision_for_huge_n])
-
-
-_known_primes = [2, 3]
-_known_primes += [x for x in range(5, 1000, 2) if is_prime(x)]
 
 # All the primes within the first 500 fibonacci numbers
 # from http://oeis.org/A005478
 # http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable301.html
-known_fib_primes = [1, 2,3,5,13,89,233,1597,28657,514229,433494437,
+known_fib_primes = [2,3,5,13,89,233,1597,28657,514229,433494437,
  2971215073,99194853094755497, 1066340417491710595814572169,
  19134702400093278081449423917,
  475420437734698220747368027166749382927701417016557193662268716376935476241,
